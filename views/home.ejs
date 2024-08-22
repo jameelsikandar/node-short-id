@@ -16,10 +16,36 @@
     <p>URL Generated: http://localhost:8000/url/<%= id %></p>
 
     <% } %>
-    <form method="post" action="/url">
-      <label for="">Enter your original URL</label>
-      <input type="text" placeholder="http://example.com" name="url" />
-      <button type="submit">Generate</button>
-    </form>
+    <div>
+      <form method="post" action="/url">
+        <label for="">Enter your original URL</label>
+        <input type="text" placeholder="http://example.com" name="url" />
+        <button type="submit">Generate</button>
+      </form>
+    </div>
+    <br />
+    <div>
+      <% if (urls) { %>
+      <table>
+        <thead>
+          <th>S.No</th>
+          <th>Short Id</th>
+          <th>Redirect</th>
+          <th>Clicks</th>
+        </thead>
+        <tbody>
+          <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= url.shortId %></td>
+            <td><%= url.redirectURL %></td>
+            <td><%= url.visitHistory.length %></td>
+          </tr>
+
+          <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
   </body>
 </html>
