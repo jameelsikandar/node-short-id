@@ -25,7 +25,7 @@
     </div>
     <br />
     <div>
-      <% if (urls) { %>
+      <% if (urls && urls.length > 0) { %>
       <table>
         <thead>
           <th>S.No</th>
@@ -38,13 +38,14 @@
           <tr>
             <td><%= index + 1 %></td>
             <td><%= url.shortId %></td>
-            <td><%= url.redirectURL %></td>
+            <td><%= url.redirectUrl %></td>
             <td><%= url.visitHistory.length %></td>
           </tr>
-
           <% }) %>
         </tbody>
       </table>
+      <% } else { %>
+      <p>No URLs have been generated yet.</p>
       <% } %>
     </div>
   </body>

@@ -9,15 +9,23 @@ async function handleGenerateNewShortUrl(req, res) {
       return res.status(400).json({ error: "URL is required" });
     }
 
-    const newShortId = shortid.generate(); // Correctly generate a new short ID
+    if (!req.user || !req.user._id) {
+      return res.status(400).json({ error: "User not authenticated" });
+    }
 
-    const newUrl = await URL.create({
+    const newShortId = shortid.generate(); // Generate a new short ID
+
+    await URL.create({
       shortId: newShortId,
       redirectUrl: body.url,
       visitHistory: [],
+      createdBy: req.user._id, // Set the createdBy field
     });
 
-    return res.render("home", { id: newShortId });
+    // Fetch only the URLs created by the logged-in user
+    const userUrls = await URL.find({ createdBy: req.user._id });
+
+    return res.render("home", { id: newShortId, urls: userUrls });
   } catch (error) {
     console.error("Error generating short URL:", error);
     return res.status(500).json({ error: "Internal Server Error" });
